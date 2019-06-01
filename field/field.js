@@ -16,13 +16,29 @@ for (let y = 0; y < 600; y += step) {
 context.strokeStyle = colorLine;
 context.stroke();
 
-document.getElementById('field').addEventListener('click', (e)=>{
+document.getElementById('field').addEventListener('click', (e) => {
   console.log(e);
-  console.log(document.getElementById('field').offsetTop);
-  console.log(document.getElementById('field').offsetLeft);
+  let preliminaryCoordinateX = e.offsetX / 15;
+  let preliminaryCoordinateY = e.offsetY / 15;
+  if (((preliminaryCoordinateX - Math.trunc(preliminaryCoordinateX) < 0.3)
+    || (preliminaryCoordinateX - Math.trunc(preliminaryCoordinateX) > 0.7))
+    && ((preliminaryCoordinateY - Math.trunc(preliminaryCoordinateY) < 0.3)
+      || (preliminaryCoordinateY - Math.trunc(preliminaryCoordinateY) > 0.7))) {
+    console.log('Click is valid');
+    setParameters(preliminaryCoordinateX, preliminaryCoordinateY);
+  };
+});
 
-})
+setParameters = (coordinateX, coordinateY) => {
+  console.log(coordinateX, coordinateY);
+  dote.coordinateX = (coordinateX - Math.trunc(coordinateX)) < 0.3 ? Math.trunc(coordinateX) : Math.trunc(coordinateX) + 1;
+  dote.coordinateY = (coordinateY - Math.trunc(coordinateY)) < 0.3 ? Math.trunc(coordinateY) : Math.trunc(coordinateY) + 1;
+  console.log('-=', dote)
+};
 
-setCoordinateX = (coordinate) =>{
-
-}
+let dote = {
+  owner: '',
+  player: '',
+  coordinateX: '',
+  coordinateY: '',
+};
