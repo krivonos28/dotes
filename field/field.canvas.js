@@ -29,7 +29,7 @@ class FieldCanvasClass {
       this.context.arc(dote.coordinateX*15+0.5,dote.coordinateY*15+0.5, 4, 0, 2 * Math.PI, false);
       this.context.stroke();
       this.context.fill();
-
+    console.log('point is created!!!')
   }
 }
 export const FieldCanvas = new FieldCanvasClass();

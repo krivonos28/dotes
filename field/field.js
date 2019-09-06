@@ -14,27 +14,22 @@ class Field {
     };
   }
   setPoints(coordinateX, coordinateY) {
-      let point = {};
-    console.log(coordinateX, coordinateY);
-    console.log('0000---', field);
-    point.ctoordinateX = (coordinateX - Math.trunc(coordinateX)) < 0.3
+    let point = {};
+    point.coordinateX = (coordinateX - Math.trunc(coordinateX)) < 0.3
     ? Math.trunc(coordinateX)
     : Math.trunc(coordinateX) + 1;
     point.coordinateY = (coordinateY - Math.trunc(coordinateY)) < 0.3
     ? Math.trunc(coordinateY)
     : Math.trunc(coordinateY) + 1;
-    console.log('-=', point);
-      if (this.getPoint(point.coordinateX, point.coordinateY)) {
+      if (!this.getPoint(point)) {
         FieldCanvas.createPoint(point);
-        service.sendPoint(point);
-        field[point.coordinateX][point.coordinateY] = true;
-        console.log('====== point is created');
+        service.sendPoint(point.coordinateX);
+        field[point.coordinateX][point.coordinateY] = point;
       }
   }
 
-    getPoint(coordinateX, coordinateY) {
-      console.log('get points is called');
-     return field[coordinateX][coordinateY];
+    getPoint(point) {
+     return field[point.coordinateX] ? field[point.coordinateX][point.coordinateY] : false;
     }
 };
 export const gameField = new Field();
