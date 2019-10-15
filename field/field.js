@@ -1,9 +1,6 @@
-import { FieldCanvas } from './field.canvas.js'; 
-import field from './field.arr.js'
-
-field[0][9] = 3;
-console.log('--- field', field)
-console.log('--- field', field[0][10])
+import { FieldCanvas } from './field.canvas.js';
+import field from './field.arr.js';
+import { gameService } from '../services/game.service.js';
 
 class Field {
   constructor(){
@@ -15,16 +12,23 @@ class Field {
     };
   }
   setPoints(coordinateX, coordinateY) {
-    console.log(coordinateX, coordinateY);
-  this.dote.coordinateX = (coordinateX - Math.trunc(coordinateX)) < 0.3
+    let point = {};
+    point.coordinateX = (coordinateX - Math.trunc(coordinateX)) < 0.3
     ? Math.trunc(coordinateX)
     : Math.trunc(coordinateX) + 1;
-  this.dote.coordinateY = (coordinateY - Math.trunc(coordinateY)) < 0.3
+    point.coordinateY = (coordinateY - Math.trunc(coordinateY)) < 0.3
     ? Math.trunc(coordinateY)
     : Math.trunc(coordinateY) + 1;
-  console.log('-=', this.dote);
-  FieldCanvas.createPoint(this.dote);
+      if (!this.getPoint(point)) {
+        FieldCanvas.createPoint(point);
+        gameService.sendPoint(point.coordinateX);
+        field[point.coordinateX][point.coordinateY] = point;
+        gameService.sendPoint(point);
+      }
   }
 
+    getPoint(point) {
+     return field[point.coordinateX] ? field[point.coordinateX][point.coordinateY] : false;
+    }
 };
 export const gameField = new Field();
