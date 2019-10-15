@@ -1,9 +1,11 @@
 class FieldCanvasClass {
   constructor(){
+    this.isFieldCreated = false;
     this.c_canvas = document.getElementById("field");
     this.context = this.c_canvas.getContext("2d");
   }
   createField = () => {
+    if (!this.isFieldCreated){
     const step = 15;
     const colorLine = '#888';
     this.context.strokeStyle = colorLine;
@@ -19,7 +21,9 @@ class FieldCanvasClass {
       this.context.lineTo(600, y + 0.5);
       this.context.stroke();
     }
+    this.isFieldCreated = true;
     console.log('--- field is created')
+  }
   }
 
   createPoint(dote){

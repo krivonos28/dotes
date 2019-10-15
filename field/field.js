@@ -1,8 +1,6 @@
 import { FieldCanvas } from './field.canvas.js';
 import field from './field.arr.js';
-import { service } from '../services/game.service.js';
-
-
+import { gameService } from '../services/game.service.js';
 
 class Field {
   constructor(){
@@ -23,8 +21,9 @@ class Field {
     : Math.trunc(coordinateY) + 1;
       if (!this.getPoint(point)) {
         FieldCanvas.createPoint(point);
-        service.sendPoint(point.coordinateX);
+        gameService.sendPoint(point.coordinateX);
         field[point.coordinateX][point.coordinateY] = point;
+        gameService.sendPoint(point);
       }
   }
 

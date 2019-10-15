@@ -1,19 +1,22 @@
 import { FieldCanvas } from './field/field.canvas.js';
 import { gameField } from './field/field.js';
-import { service } from './services/game.service.js';
+import { gameService } from './services/game.service.js';
 // confirm close wondow
 // window.onbeforeunload = (e) => {
 //   e.returnValue = '------';
 //   return 'goodbay';
 // }
 console.log(window.sessionStorage.getItem('user-Id'));
-if (location.hash.search(/gameId/i) !== -1 && !window.sessionStorage.getItem('user-Id')) {
-  service.joinTheGame();
+console.log(location.hash.search(/gameId/i));
+
+if (location.hash.search(/gameId/i) !== -1 || !window.sessionStorage.getItem('user-Id')) {
+  console.log('location is good')
+  gameService.joinTheGame();
 }
 
 document.getElementById('newGame').addEventListener('click', () => {
   console.log('new game');
-  service.setGame();
+  gameService.setGame();
   drowField();
   FieldCanvas.createField();
 });
@@ -25,7 +28,7 @@ document.getElementById('field').addEventListener('click', (e) => {
   if (((preliminaryCoordinateX - Math.trunc(preliminaryCoordinateX) < 0.3)
     || (preliminaryCoordinateX - Math.trunc(preliminaryCoordinateX) > 0.7))
     && ((preliminaryCoordinateY - Math.trunc(preliminaryCoordinateY) < 0.3)
-      || (preliminaryCoordinateY - Math.trunc(preliminaryCoordinateY) > 0.7))) {
+    || (preliminaryCoordinateY - Math.trunc(preliminaryCoordinateY) > 0.7))) {
     gameField.setPoints(preliminaryCoordinateX, preliminaryCoordinateY);
     }
 });
