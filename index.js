@@ -1,7 +1,7 @@
 import { FieldCanvas } from './field/field.canvas.js';
 import { gameField } from './field/field.js';
 import { gameService } from './services/game.service.js';
-// confirm close wondow
+// confirm close window
 // window.onbeforeunload = (e) => {
 //   e.returnValue = '------';
 //   return 'goodbay';
@@ -12,6 +12,8 @@ console.log(location.hash.search(/gameId/i));
 if (location.hash.search(/gameId/i) !== -1 || !window.sessionStorage.getItem('user-Id')) {
   console.log('location is good')
   gameService.joinTheGame();
+  drowField();
+  FieldCanvas.createField();
 }
 
 document.getElementById('newGame').addEventListener('click', () => {

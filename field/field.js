@@ -10,9 +10,12 @@ class Field {
       coordinateX: '',
       coordinateY: '',
     };
-  }
-  setPoints(coordinateX, coordinateY) {
+  };
+  setPoints(coordinateX, coordinateY, isOtherUser = false) {
     let point = {};
+    let user = window.sessionStorage.getItem('order');
+    console.log("-----color user", user)
+    let color = ((user === '1' &&  isOtherUser)||(user === '0' && !isOtherUser)) ? "red" : "blue";
     point.coordinateX = (coordinateX - Math.trunc(coordinateX)) < 0.3
     ? Math.trunc(coordinateX)
     : Math.trunc(coordinateX) + 1;
@@ -20,10 +23,9 @@ class Field {
     ? Math.trunc(coordinateY)
     : Math.trunc(coordinateY) + 1;
       if (!this.getPoint(point)) {
-        FieldCanvas.createPoint(point);
-        gameService.sendPoint(point.coordinateX);
+        FieldCanvas.createPoint(point, color);
         field[point.coordinateX][point.coordinateY] = point;
-        gameService.sendPoint(point);
+        !isOtherUser && gameService.sendPoint(point);
       }
   }
 

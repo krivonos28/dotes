@@ -1,4 +1,5 @@
-class Service {
+import { gameField } from '../field/field.js'
+class Service{
   constructor (){
     this.isGameStarted = false;
     this.ws = new WebSocket('ws://localhost:3005');
@@ -6,28 +7,34 @@ class Service {
     this.ws.onmessage = (req, res) => {
       console.log('onmessage newgame')
       let body = JSON.parse(req.data);
-      console.log('body type', body.type)
-      if(body.type === 'hello') {
-        console.log(body)
-      }
+      console.log('---- body', body)
       if (body.type === 'newGame') {
         location.hash = body.gameId;
         this.isGameStarted = true;
         window.sessionStorage.setItem('user-Id', body.userOneId);
+        window.sessionStorage.setItem('game-Id', body.gameId);
+        window.sessionStorage.setItem('order', 0);
+          let node = document.createElement('LI');
+          let textNone = document.createTextNode(`<a href="http://localhost:8080/#${body.gameId}">Join game</a>`)
+          node.appendChild(textNone);
+          document.getElementById('menu').appendChild(node)
       };
       if (body.type === 'joinTheGame') {
-        console.log('d----- body join the game', body);
-        window.sessionStorage.setItem('secondUerid', body.userTowId);
+        console.log('join the game',body)
+        window.sessionStorage.setItem('secondUerid', body.secondUserId);
+        window.sessionStorage.setItem('game-Id', body.game.gameId);
+        window.sessionStorage.setItem('order', 1)
       }
       if(body.type === 'secondUserIsTaken'){
         console.log('secondUserIsTaken')
       }
-      if(body.type === 'newPoint'){
+      if(body.type === 'nextStep'){
         console.log('new point ', body);
+        gameField.setPoints(body.point.coordinateX, body.point.coordinateY, true)
       }
     };
   }
-  send(message, callback) {
+  send(message) {
     console.log('message -----', message)
     this.waitForConnection(() => {
       this.ws.send(message);
@@ -38,7 +45,6 @@ class Service {
     if (this.ws.readyState === 1) {
       callback();
     } else {
-      let that = this;
       setTimeout (() => {
         this.waitForConnection(callback, interval);
     }, interval);
@@ -46,16 +52,19 @@ class Service {
   }
   sendPoint(point) {
       let body = {
+          gameId: window.sessionStorage.getItem('game-Id'),
           type: 'nextStep',
           point: point, 
       }
+      console.log('----send point', body);
     this.ws.send(JSON.stringify(body));
   }
   joinTheGame(){
+    let gameId = window.location.hash.slice(1);
     console.log('joinTheGame')
     let body = {
       type: 'joinTheGame',
-      gameId: '123456789',
+      gameId: gameId, // I need to change gmaeId (get id from session storage)
     };
     try {
       console.log('d---=======');
@@ -67,7 +76,6 @@ class Service {
   }
 
   setGame(){
-    console.log('setGame')
     let body = {
       type: 'newGame',
       body: 'userId',

@@ -26,10 +26,11 @@ class FieldCanvasClass {
   }
   }
 
-  createPoint(dote){
+  createPoint(dote, color){
     this.context.beginPath();
-      this.context.strokeStyle = 'blue';
-      this.context.fillStyle = 'blue';
+
+      this.context.strokeStyle = color;
+      this.context.fillStyle = color;
       this.context.arc(dote.coordinateX*15+0.5,dote.coordinateY*15+0.5, 4, 0, 2 * Math.PI, false);
       this.context.stroke();
       this.context.fill();
