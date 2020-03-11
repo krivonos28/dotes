@@ -38,7 +38,6 @@ class Service {
     if (this.ws.readyState === 1) {
       callback();
     } else {
-      let that = this;
       setTimeout (() => {
         this.waitForConnection(callback, interval);
     }, interval);
